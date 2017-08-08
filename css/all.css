@@ -1,0 +1,42 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: Lato, sans-serif;
+}
+
+a{
+    text-decoration: none;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+nav ul li {
+    display: inline;
+}
+
+.main-menu{
+    height: 50px;
+    background-color: #45b6f2;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.main-menu ul li{
+    margin-left: 40px;
+    line-height: 50px;
+}
+
+.main-menu ul li a{
+    color: white;
+}
+
+.main-menu ul li.active a,
+.main-menu ul li a:hover{
+    color: #ccc;
+}
+

@@ -69,39 +69,42 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     border: 1px solid #66afe9;
 }
 
-.main-menu{
+#main-menu{
     height: 50px;
     background-color: #45b6f2;
     font-size: 14px;
     font-weight: bold;
 }
 
-.main-menu .menu-item{
+#main-menu .menu-item{
     height: 100%;
     margin: 0 0 0 40px;
     line-height: 50px;
     float: left;
 }
 
-.main-menu .menu-item a{
+#main-menu .menu-item a{
     color: white;
 }
 
-.main-menu .menu-item.active a,
-.main-menu .menu-item a:hover{
+#main-menu .menu-item.active a,
+#main-menu .menu-item a:hover{
     color: #ccc;
 }
 
-.main-menu .menu-item.divider-vertical-blue{
+#main-menu .menu-item.divider-vertical-blue{
     border-left: 1px solid #3aa2e3;
     border-right: 1px solid #70c5f2;
 }
 
-.main-menu .menu-item.search .search-bar{
+#main-menu .menu-item#search .search-bar{
     float: left;
 }
 
-.main-menu .menu-item.search .btn{
+#main-menu .menu-item#search .btn{
     margin-left: 10px;
 }
 
+#main-content .books-wrapper{
+    padding: 20px;
+}

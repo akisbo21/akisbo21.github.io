@@ -4,24 +4,50 @@ var BooksApi = function()
 
     self.API_URL  = "https://www.googleapis.com/books/v1/volumes?q=";
     self.IN_TITLE = "intitle:";
+    self.ISBN     = "isbn:";
 
-    self.text = "";
+    self.title = "";
+    self.isbn  = "";
 
-    self.hasText = function(){return self.text != ""};
-    self.getText = function() {return self.text;};
-    self.setText = function(text) {self.text = helperTool.convertToSlug(text);};
+    self.totalItems = 0;
 
-    self.getTextParam = function()
+    self.hasTitle = function(){return self.title != ""};
+    self.getTitle = function() {return self.title;};
+    self.getTitleSlug = function(){return helperTool.convertToSlug(self.title);};
+    self.setTitle = function(text) {self.title = helperTool.convertToSlug(text);};
+
+    self.hasIsbn = function(){return self.isbn != ""};
+    self.getIsbn = function() {return self.isbn;};
+    self.setIsbn = function(isbn) {self.isbn = isbn;};
+
+    self.hasUrlParam = function()
     {
-        return self.IN_TITLE + self.getText();
+        return self.hasTitle() || self.hasIsbn();
     };
 
-    self.request = function(callback)
+    self.getUrlParam = function()
+    {
+        var urlParam = "";
+        if (self.hasTitle()) {
+            urlParam += self.IN_TITLE + self.getTitleSlug();
+        }
+
+        if (self.hasIsbn()) {
+            urlParam += self.ISBN + self.getIsbn();
+        }
+
+        return urlParam;
+    };
+
+    /**
+     * @return Book[]
+     */
+    self.getBooks = function(callback)
     {
         // @todo paging
 
-        if (self.hasText()) {
-            var url = self.API_URL + self.getTextParam();
+        if (self.hasUrlParam()) {
+            var url = self.API_URL + self.getUrlParam();
             console.log("Request url: " + url);
 
             $.ajax({
@@ -30,12 +56,55 @@ var BooksApi = function()
                 async: true
             }).done(function (data, status) {
                 if (status == "success") {
-                    callback(data);
+                    self.parseBooks(data, callback);
                 }
 
-                console.log(data);
+                //console.log(data);
             });
         }
+    };
+
+    /**
+     * @param rawData   Example https://www.googleapis.com/books/v1/volumes?q=intitle:harry+potter
+     */
+    self.parseBooks = function(rawData, callback)
+    {
+        var books = [];
+        self.totalItems = rawData.totalItems;
+
+        if (self.totalItems) {
+            for (var i = 0; i < rawData.items.length; i++) {
+                var hasIsbn = rawData.items[i].volumeInfo.industryIdentifiers ? true : false;
+                if (hasIsbn) {
+                    var priceAmount = null;
+                    var priceCurrency = null;
+                    if (typeof rawData.items[i].saleInfo.listPrice !== 'undefined') {
+                        priceAmount = typeof rawData.items[i].saleInfo.listPrice.amount !== 'undefined' ? rawData.items[i].saleInfo.listPrice.amount : null;
+                        priceCurrency = typeof rawData.items[i].saleInfo.listPrice.currencyCode !== 'undefined' ? rawData.items[i].saleInfo.listPrice.currencyCode : null;
+                    }
+
+                    var book = new Book({
+                        id: rawData.items[i].id,
+                        isbn: rawData.items[i].volumeInfo.industryIdentifiers[0].identifier,
+                        title: rawData.items[i].volumeInfo.title,
+                        authors: rawData.items[i].volumeInfo.authors,
+                        description: rawData.items[i].volumeInfo.description,
+                        publishedDate: rawData.items[i].volumeInfo.publishedDate,
+                        images: rawData.items[i].volumeInfo.imageLinks,
+                        categories: rawData.items[i].volumeInfo.categories,
+                        averageRating: rawData.items[i].volumeInfo.averageRating,
+                        ratingsCount: rawData.items[i].ratingsCount,
+                        priceAmount: priceAmount,
+                        priceCurrency: priceCurrency
+                    });
+
+                    books.push(book);
+                }
+            }
+        }
+
+        console.log(books);
+        callback(books)
     };
 };
 

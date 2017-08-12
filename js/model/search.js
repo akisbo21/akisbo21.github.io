@@ -2,14 +2,20 @@ var Search = function()
 {
     var self = this;
 
+    /* CK = cookie key */
+    self.CK_LAST_SEARCHED = "last-searched";
+
     self.books        = [];
-    self.totalItems   = 0;
-    self.lastSearched = "";
 
     self.searchDom = $("#main-menu #search");
     self.inputDom  = self.searchDom.find('input');
     self.goBtnDom  = self.searchDom.find('.btn');
-    self.booksDom  = $("#main-content .books-wrapper .books");
+
+    self.booksDom = $("body#index-page #main-content .books-wrapper .books");
+
+    self.hasLastSearched = function() {return self.getLastSearched() != null;};
+    self.getLastSearched = function() {return Cookies.get(self.CK_LAST_SEARCHED);};
+    self.setLastSearched = function(lastSearched) {Cookies.set(self.CK_LAST_SEARCHED, lastSearched);};
 
     self.init = function()
     {
@@ -31,59 +37,29 @@ var Search = function()
         });
     };
 
-    self.requestBooksApi = function()
+    self.requestBooksApi = function(callback)
     {
-        var inputText = self.inputDom.val();
-        if (self.lastSearched != inputText) {
-            self.books        = [];
-            self.lastSearched = inputText;
-            booksApi.setText(self.inputDom.val());
-            booksApi.request(self.parseBooks);
-        }
-    };
+        self.setLastSearched(self.inputDom.val());
 
-    /**
-     * @param rawData   Example https://www.googleapis.com/books/v1/volumes?q=intitle:harry+potter
-     */
-    self.parseBooks = function(rawData)
-    {
-        self.totalItems = rawData.totalItems;
-
-        if (self.totalItems) {
-            for (var i = 0; i < rawData.items.length; i++) {
-                var priceAmount = null;
-                var priceCurrency = null;
-                if (typeof rawData.items[i].saleInfo.listPrice !== 'undefined') {
-                    priceAmount = typeof rawData.items[i].saleInfo.listPrice.amount !== 'undefined' ? rawData.items[i].saleInfo.listPrice.amount : null;
-                    priceCurrency = typeof rawData.items[i].saleInfo.listPrice.currencyCode !== 'undefined' ? rawData.items[i].saleInfo.listPrice.currencyCode : null;
-                }
-
-                var book = new Book({
-                    title: rawData.items[i].volumeInfo.title,
-                    authors: rawData.items[i].volumeInfo.authors,
-                    description: rawData.items[i].volumeInfo.description,
-                    publishedDate: rawData.items[i].volumeInfo.publishedDate,
-                    images: rawData.items[i].volumeInfo.imageLinks,
-                    averageRating: rawData.items[i].averageRating,
-                    ratingsCount: rawData.items[i].ratingsCount,
-                    priceAmount: priceAmount,
-                    priceCurrency: priceCurrency
-                });
-
-                self.books.push(book);
-            }
+        if (!router.isIndexPage()) {
+            return router.redirectToIndexPage();
         }
 
-        //console.log(books);
-        self.refreshBooksDom();
+        self.books = [];
+        booksApi.setTitle(self.inputDom.val());
+        booksApi.getBooks(self.refreshBooksDom);
+
+        window.history.pushState({}, 'Index', '/index.html?q=' + booksApi.getTitle());
     };
 
-    self.refreshBooksDom = function()
+    self.refreshBooksDom = function(books)
     {
+        self.books = books;
+
         var booksHtml = "";
         if (self.books.length) {
             for (var i = 0; i < self.books.length; i++) {
-                booksHtml += self.books[i].getHtml();
+                booksHtml += self.books[i].getListPageHtml();
             }
         }
         else {
@@ -96,4 +72,4 @@ var Search = function()
     self.init();
 };
 
-new Search();
+var searchBar = new Search();

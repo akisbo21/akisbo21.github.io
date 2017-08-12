@@ -3,8 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title>LogMeIn Bookshop</title>
-</head>
-<body>
 
+    <link rel="stylesheet" type="text/css" href="css/all.css">
+</head>
+<body id="book-page">
+<div id="main-menu">
+    <div class="menu-item">
+        <a href="index.html">LogMeIn Bookshop</a>
+    </div>
+
+    <div class="menu-item divider-vertical-blue"></div>
+
+    <div class="menu-item">
+        <a href="index.html">Home</a>
+    </div>
+
+    <div class="menu-item active">
+        <a href="shopping-cart.html">Cart</a>
+    </div>
+
+    <div class="menu-item divider-vertical-blue"></div>
+
+    <div id="search" class="menu-item">
+        <div class="search-bar">
+            <input type="text" placeholder="Search for a book..." />
+        </div>
+        <div class="btn btn-blue">
+            <a>Go</a>
+        </div>
+    </div>
+</div>
+
+<div id="main-content">
+    <div class="book-container">
+    </div>
+</div>
+
+<script src="js/plugin/jquery-3.2.1.min.js"></script>
+<script src="js/plugin/js.cookie.js"></script>
+<script src="js/model/helper-tool.js"></script>
+<script src="js/model/router.js"></script>
+<script src="js/model/books-api.js"></script>
+<script src="js/model/book.js"></script>
+<script src="js/model/search.js"></script>
+<script src="js/page/book.js"></script>
 </body>
 </html>

@@ -22,6 +22,7 @@ var ShoppingCart = function()
     self.setBooks = function(books)
     {
         //Cookies.remove(self.CK_BOOKS_IN_CART);
+        // @todo check special characters maybe they kill stringyfi.
         Cookies.set(self.CK_BOOKS_IN_CART, JSON.stringify(books));
     };
 

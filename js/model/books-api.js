@@ -45,6 +45,8 @@ var BooksApi = function()
     self.getBooks = function(callback)
     {
         // @todo paging
+        // @todo csak az isbn-t menteni. es visszatolteni.
+        //https://www.googleapis.com/books/v1/volumes?q=isbn:9781612630366+OR+isbn:1898998590
 
         if (self.hasUrlParam()) {
             var url = self.API_URL + self.getUrlParam();

@@ -2,18 +2,28 @@ var ShoppingCartPage = function()
 {
     var self = this;
 
-    self.booksDom = $("body#shopping-cart-page #main-content .book-container");
+    self.booksContainerDom = $("body#shopping-cart-page #main-content .book-container");
+    self.books             = null;
 
     self.init = function()
     {
-        var booksInCart = shoppingCart.getBooks();
-        var booksDom    = "";
+        self.refreshBookDom();
+    };
 
-        for (var i = 0; i < booksInCart.length; i++) {
-            booksDom += booksInCart[i].getFullPageHtml();
+    self.refreshBookDom = function(books)
+    {
+        self.books = shoppingCart.getBooks();
+
+        var booksDom = "";
+        for (var i = 0; i < self.books.length; i++) {
+            booksDom += self.books[i].getFullPageHtml();
         }
 
-        self.booksDom.html(booksDom);
+        self.booksContainerDom.html(booksDom);
+
+        for (var j = 0; j < self.books.length; j++) {
+            self.books[j].addEventHandlers();
+        }
     };
 
     self.init();

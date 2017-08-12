@@ -104,6 +104,22 @@ var Book = function(data)
         self.dom.addClass('in-cart');
     };
 
+    self.onAddToCartClick = function()
+    {
+        $("#" + self.getId() + " .add-to-cart-btn").click(self.addToCart);
+    };
+
+    self.onRemoveFromCartClick = function()
+    {
+        $("#" + self.getId() + " .remove-from-cart-btn").click(self.removeFromCart);
+    };
+
+    self.addEventHandlers = function()
+    {
+        self.onAddToCartClick();
+        self.onRemoveFromCartClick();
+    };
+
     self.getListPageHtml = function()
     {
         return '<div class="one-book-wrapper">' +
@@ -179,4 +195,3 @@ var Book = function(data)
             '</div>'
     };
 };
-

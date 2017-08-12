@@ -15,36 +15,13 @@ var BookPage = function()
 
         booksApi.setIsbn(isbn);
         booksApi.getBooks(self.refreshBookDom);
-
-        self.onAddToCartClick();
-        self.onRemoveFromCartClick();
     };
 
     self.refreshBookDom = function(books)
     {
         self.book = books[0];
         self.bookContainerDom.html(self.book.getFullPageHtml());
-        self.bookDom = self.bookContainerDom.find(".one-book-wrapper");
-    };
-
-    self.onAddToCartClick = function()
-    {
-        self.bookContainerDom.on('click', '.add-to-cart-btn', self.addToCartClicked);
-    };
-
-    self.onRemoveFromCartClick = function()
-    {
-        self.bookContainerDom.on('click', '.remove-from-cart-btn', self.removeFromCartClicked);
-    };
-
-    self.addToCartClicked = function()
-    {
-        self.book.addToCart();
-    };
-
-    self.removeFromCartClicked = function()
-    {
-        self.book.removeFromCart();
+        self.book.addEventHandlers();
     };
 
     self.init();

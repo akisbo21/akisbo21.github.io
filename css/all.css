@@ -204,12 +204,13 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 .book-container{
     width: 60%;
     margin: 0 auto;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .one-book-wrapper.full{
     padding: 10px;
     border: 1px solid #e7e7e7;
+    margin-top: 30px;
 }
 
 .one-book-wrapper.full .one-book {

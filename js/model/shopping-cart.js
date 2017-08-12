@@ -5,9 +5,18 @@ var ShoppingCart = function()
     /** CK = cookie key */
     self.CK_BOOKS_IN_CART = "books-in-cart";
 
+    /**
+     * @returns Book[]
+     */
     self.getBooks = function()
     {
-        return Cookies.get(self.CK_BOOKS_IN_CART) != undefined ? JSON.parse(Cookies.get(self.CK_BOOKS_IN_CART)) : [];
+        var objs = Cookies.get(self.CK_BOOKS_IN_CART) != undefined ? JSON.parse(Cookies.get(self.CK_BOOKS_IN_CART)) : [];
+        var books = [];
+        for (var i = 0; i < objs.length; i++) {
+            books.push(new Book(objs[i]));
+        }
+
+        return books;
     };
 
     self.setBooks = function(books)

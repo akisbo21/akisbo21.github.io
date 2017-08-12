@@ -1,3 +1,13 @@
-/**
- * Created by Bo on 2017-08-08.
- */
+var ShoppingCartPage = function()
+{
+    var self = this;
+
+    self.init = function()
+    {
+        //var booksInCart =
+    };
+
+    self.init();
+};
+
+new ShoppingCartPage();

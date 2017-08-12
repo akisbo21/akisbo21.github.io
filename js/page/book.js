@@ -39,13 +39,11 @@ var BookPage = function()
 
     self.addToCartClicked = function()
     {
-        self.bookDom.addClass('in-cart');
         self.book.addToCart();
     };
 
     self.removeFromCartClicked = function()
     {
-        self.bookDom.removeClass('in-cart');
         self.book.removeFromCart();
     };
 

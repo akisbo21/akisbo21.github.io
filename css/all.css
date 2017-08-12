@@ -275,3 +275,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 .one-book-wrapper.full.in-cart .one-book .details .actions-wrapper .actions .add-to-cart-btn{
     display: none;
 }
+
+.one-book-wrapper.full .one-book .details .description-wrapper{
+    text-align: justify;
+}

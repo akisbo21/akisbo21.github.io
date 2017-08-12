@@ -6,16 +6,47 @@
 
     <link rel="stylesheet" type="text/css" href="css/all.css">
 </head>
-<body id="index-page">
-<nav class="main-menu">
-    <ul class="nav navbar-nav">
-        <li><a href="index.html">LogMeIn Bookshop</a></li>
-        <li><a href="index.html">Home</a></li>
-        <li class="active"><a href="shopping-cart.html">Cart</a></li>
-    </ul>
-</nav>
+<body id="shopping-cart-page">
+<div id="main-menu">
+    <div class="menu-item">
+        <a href="index.html">LogMeIn Bookshop</a>
+    </div>
 
+    <div class="menu-item divider-vertical-blue"></div>
 
-<script src="js/page/index.js"></script>
+    <div class="menu-item">
+        <a href="index.html">Home</a>
+    </div>
+
+    <div class="menu-item active">
+        <a href="shopping-cart.html">Cart</a>
+    </div>
+
+    <div class="menu-item divider-vertical-blue"></div>
+
+    <div id="search" class="menu-item">
+        <div class="search-bar">
+            <input type="text" placeholder="Search for a book..." />
+        </div>
+        <div class="btn btn-blue">
+            <a>Go</a>
+        </div>
+    </div>
+</div>
+
+<div id="main-content">
+    <div class="book-container">
+    </div>
+</div>
+
+<script src="js/plugin/jquery-3.2.1.min.js"></script>
+<script src="js/plugin/js.cookie.js"></script>
+<script src="js/model/helper-tool.js"></script>
+<script src="js/model/router.js"></script>
+<script src="js/model/books-api.js"></script>
+<script src="js/model/book.js"></script>
+<script src="js/model/search.js"></script>
+<script src="js/model/shopping-cart.js"></script>
+<script src="js/page/shopping-cart.js"></script>
 </body>
 </html>

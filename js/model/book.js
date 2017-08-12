@@ -5,9 +5,6 @@ var Book = function(data)
     /* @link https://developers.google.com/books/docs/v1/reference/volumes */
     self.MAX_RATING = 5;
 
-    /** CK = cookie key */
-    self.CK_BOOKS_IN_CART = "books-in-cart";
-
     self.id            = data.id;
     self.isbn          = data.isbn;
     self.title         = data.title;
@@ -20,9 +17,16 @@ var Book = function(data)
     self.priceCurrency = data.priceCurrency;
     self.categories    = data.categories;
 
+    self.dom = null;
+
     self.getId = function() {return self.id;};
     self.getIsbn = function() {return self.isbn;};
     self.getTitle = function() {return self.title;};
+
+    self.setDom = function()
+    {
+        self.dom = $("#" + self.getId());
+    };
 
     self.getDottedTitle  = function()
     {
@@ -76,46 +80,28 @@ var Book = function(data)
         return self.hasImages() ? self.getImages().thumbnail : "img/book-thumbnail-placeholder.png";
     };
 
-    self.getBooksInCart = function()
-    {
-        return Cookies.get(self.CK_BOOKS_IN_CART) != undefined ? JSON.parse(Cookies.get(self.CK_BOOKS_IN_CART)) : [];
-    };
-
-    self.setBooksInCart = function(books)
-    {
-        //Cookies.remove(self.CK_BOOKS_IN_CART);
-        return Cookies.set(self.CK_BOOKS_IN_CART, JSON.stringify(books));
-    };
-
     self.getPosInCart = function()
     {
-        var booksInCart = self.getBooksInCart();
-        var pos = booksInCart.map(function(e){return e.isbn; }).indexOf(self.getIsbn());
-        return pos;
+        return shoppingCart.getPosInCart(self);
     };
 
     self.isInCart = function()
     {
-        return self.getPosInCart() !== -1;
-    };
-
-    self.addToCart = function()
-    {
-        if (!self.isInCart()) {
-            var booksInCart = self.getBooksInCart();
-            booksInCart.push(self);
-            self.setBooksInCart(booksInCart);
-        }
+        return shoppingCart.isInCart(self);
     };
 
     self.removeFromCart = function()
     {
-        var pos = self.getPosInCart();
-        if (pos !== -1) {
-            var booksInCart = self.getBooksInCart();
-            booksInCart.splice(pos, 1);
-            self.setBooksInCart(booksInCart);
-        }
+        shoppingCart.removeFromCart(self);
+        self.setDom();
+        self.dom.removeClass('in-cart');
+    };
+
+    self.addToCart = function()
+    {
+        shoppingCart.addToCart(self);
+        self.setDom();
+        self.dom.addClass('in-cart');
     };
 
     self.getListPageHtml = function()
@@ -153,7 +139,7 @@ var Book = function(data)
     {
         var isInCartClass = self.isInCart() ? "in-cart" : "";
 
-        return '<div class="one-book-wrapper full ' + isInCartClass + '">' +
+        return '<div id="' + self.getId() + '" class="one-book-wrapper full ' + isInCartClass + '">' +
                 '<div class="one-book clearfix">' +
                         '<div class="image-wrapper">' +
                             '<img src="' + self.getThumbnailImage() + '" />' +
@@ -166,8 +152,11 @@ var Book = function(data)
                             '<div class="title">' + self.getTitle() + '</div>' +
                         '</div>' +
                         '<div class="divider-horizontal"><hr /></div>' +
-                            '<div class="authors-wrapper">' +
-                        '<div class="authors">Author(s): ' + self.getAuthors().join(', ') + '</div>' +
+                        '<div class="authors-wrapper">' +
+                            '<div class="authors">Author(s): ' + self.getAuthors().join(', ') + '</div>' +
+                        '</div>' +
+                        '<div class="description-wrapper">' +
+                            '<div class="description">' + self.getDescription() + '</div>' +
                         '</div>' +
                         '<div class="price-wrapper">' +
                             '<div class="price">' + self.getPrice() + '</div>' +

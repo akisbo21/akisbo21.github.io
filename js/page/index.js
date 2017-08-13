@@ -12,11 +12,12 @@ var IndexPage = function()
             lastSearched = lastSearched.replace(/-/g, " ");
         }
         else {
-            lastSearched = searchBar.hasLastSearched() ? searchBar.getLastSearched() : "Game of Thrones";
+            lastSearched = Search.hasLastSearched() ? Search.getLastSearched() : "Game of Thrones";
         }
 
         searchBar.inputDom.val(lastSearched);
-        searchBar.requestBooksApi(self.refreshBooksDom);
+        mobileSearchBar.inputDom.val(lastSearched);
+        searchBar.requestBooksApi();
     };
 
     self.init();

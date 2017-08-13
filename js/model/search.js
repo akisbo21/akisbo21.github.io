@@ -1,21 +1,14 @@
-var Search = function()
+var Search = function(searchDom)
 {
     var self = this;
 
-    /* CK = cookie key */
-    self.CK_LAST_SEARCHED = "last-searched";
-
     self.books        = [];
 
-    self.searchDom = $("#main-menu #search");
+    self.searchDom = searchDom;
     self.inputDom  = self.searchDom.find('input');
     self.goBtnDom  = self.searchDom.find('.btn');
 
     self.booksDom = $("body#index-page #main-content .books-wrapper .books");
-
-    self.hasLastSearched = function() {return self.getLastSearched() != null;};
-    self.getLastSearched = function() {return Cookies.get(self.CK_LAST_SEARCHED);};
-    self.setLastSearched = function(lastSearched) {Cookies.set(self.CK_LAST_SEARCHED, lastSearched);};
 
     self.init = function()
     {
@@ -37,9 +30,9 @@ var Search = function()
         });
     };
 
-    self.requestBooksApi = function(callback)
+    self.requestBooksApi = function()
     {
-        self.setLastSearched(self.inputDom.val());
+        Search.setLastSearched(self.inputDom.val());
 
         if (!router.isIndexPage()) {
             return router.redirectToIndexPage();
@@ -72,4 +65,11 @@ var Search = function()
     self.init();
 };
 
-var searchBar = new Search();
+/* CK = cookie key */
+Search.CK_LAST_SEARCHED = "last-searched";
+Search.hasLastSearched = function() {return Search.getLastSearched() != null;};
+Search.getLastSearched = function() {return Cookies.get(Search.CK_LAST_SEARCHED);};
+Search.setLastSearched = function(lastSearched) {Cookies.set(Search.CK_LAST_SEARCHED, lastSearched);};
+
+var searchBar       = new Search($("#main-menu .search-bar-container"));
+var mobileSearchBar = new Search($("#main-content .search-bar-container"));

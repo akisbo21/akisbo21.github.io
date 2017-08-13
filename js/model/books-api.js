@@ -14,7 +14,7 @@ var BooksApi = function()
     self.hasTitle = function(){return self.title != ""};
     self.getTitle = function() {return self.title;};
     self.getTitleSlug = function(){return helperTool.convertToSlug(self.title);};
-    self.setTitle = function(text) {self.title = helperTool.convertToSlug(text);};
+    self.setTitle = function(title) {self.title = title;};
 
     self.hasIsbns = function(){return self.isbns.length};
     self.getIsbns = function() {return self.isbns;};

@@ -23,17 +23,8 @@ var ShoppingCart = function()
      */
     self.getBooks = function(callback)
     {
-        //var objs = Cookies.get(self.CK_BOOKS_IN_CART) != undefined ? JSON.parse(Cookies.get(self.CK_BOOKS_IN_CART)) : [];
-        //var books = [];
-        //for (var i = 0; i < objs.length; i++) {
-        //    books.push(new Book(objs[i]));
-        //}
-
-        //var isbns =
-
         booksApi.setIsbns(self.getIsbns());
         booksApi.getBooks(callback);
-        callback(books);
     };
 
     /**

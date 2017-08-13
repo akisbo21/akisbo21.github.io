@@ -13,7 +13,7 @@ var BookPage = function()
         var isbn = url.searchParams.get("isbn");
         //console.log(isbn);
 
-        booksApi.setIsbn(isbn);
+        booksApi.addIsbn(isbn);
         booksApi.getBooks(self.refreshBookDom);
     };
 

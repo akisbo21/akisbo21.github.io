@@ -7,7 +7,7 @@ var BooksApi = function()
     self.ISBN     = "isbn:";
 
     self.title = "";
-    self.isbn  = "";
+    self.isbns = [];
 
     self.totalItems = 0;
 
@@ -16,13 +16,14 @@ var BooksApi = function()
     self.getTitleSlug = function(){return helperTool.convertToSlug(self.title);};
     self.setTitle = function(text) {self.title = helperTool.convertToSlug(text);};
 
-    self.hasIsbn = function(){return self.isbn != ""};
-    self.getIsbn = function() {return self.isbn;};
-    self.setIsbn = function(isbn) {self.isbn = isbn;};
+    self.hasIsbns = function(){return self.isbns.length};
+    self.getIsbns = function() {return self.isbns;};
+    self.setIsbns = function(isbns) {self.isbns = isbns;};
+    self.addIsbn  = function(isbn) {self.isbns.push(isbn);};
 
     self.hasUrlParam = function()
     {
-        return self.hasTitle() || self.hasIsbn();
+        return self.hasTitle() || self.hasIsbns();
     };
 
     self.getUrlParam = function()
@@ -32,8 +33,9 @@ var BooksApi = function()
             urlParam += self.IN_TITLE + self.getTitleSlug();
         }
 
-        if (self.hasIsbn()) {
-            urlParam += self.ISBN + self.getIsbn();
+        // e.g. https://www.googleapis.com/books/v1/volumes?q=isbn:9780007482931+OR+isbn:9781456610807
+        if (self.hasIsbns()) {
+            urlParam += self.ISBN + self.getIsbns().join("+OR+" + self.ISBN);
         }
 
         return urlParam;
@@ -45,8 +47,6 @@ var BooksApi = function()
     self.getBooks = function(callback)
     {
         // @todo paging
-        // @todo csak az isbn-t menteni. es visszatolteni.
-        //https://www.googleapis.com/books/v1/volumes?q=isbn:9781612630366+OR+isbn:1898998590
 
         if (self.hasUrlParam()) {
             var url = self.API_URL + self.getUrlParam();

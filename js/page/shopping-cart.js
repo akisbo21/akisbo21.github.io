@@ -7,12 +7,12 @@ var ShoppingCartPage = function()
 
     self.init = function()
     {
-        self.refreshBookDom();
+        shoppingCart.getBooks(self.refreshBookDom);
     };
 
     self.refreshBookDom = function(books)
     {
-        self.books = shoppingCart.getBooks();
+        self.books = books;
 
         var booksDom = "";
         for (var i = 0; i < self.books.length; i++) {

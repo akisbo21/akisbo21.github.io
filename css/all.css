@@ -317,7 +317,8 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 }
 
 .one-book-wrapper.full .one-book .image-wrapper img{
-    width: 70%;
+    width: 175px;
+    height: 225px;
 }
 
 .one-book-wrapper.full .one-book .details{
@@ -369,6 +370,33 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     display: none;
 }
 
-.one-book-wrapper.full .one-book .details .description-wrapper{
+.one-book-wrapper.full .one-book .details .description-wrapper {
     text-align: justify;
+}
+
+
+@media (max-width: 1420px) {
+    .book-container{
+        width: 95%;
+    }
+}
+
+@media (max-width: 950px) {
+    .one-book-wrapper.full .one-book .image-wrapper{
+        width: 35%;
+    }
+
+    .one-book-wrapper.full .one-book .details{
+        width: 65%;
+    }
+}
+
+@media (max-width: 650px) {
+    .one-book-wrapper.full .one-book .image-wrapper{
+        width: 100%;
+    }
+
+    .one-book-wrapper.full .one-book .details{
+        width: 100%;
+    }
 }
